@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, SafeAreaView, Text, View } from "react-native";
 import { COLORS, FONT, icons, SHADOWS, SIZES } from "../constants";
 import { useRouter } from "expo-router";

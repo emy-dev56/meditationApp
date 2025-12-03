@@ -1,10 +1,7 @@
 import { Text, SafeAreaView } from "react-native";
-import React from "react";
-import { Stack } from "expo-router";
 import { COLORS, SHADOWS, SIZES } from "../../constants";
 import { useTheme } from "../../context/ThemeProvider";
 import { Switch, View } from "react-native";
-import { TouchableOpacity } from "react-native";
 import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
 
 const ThemeChange = () => {
