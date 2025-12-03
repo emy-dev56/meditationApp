@@ -6,7 +6,7 @@ import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 import Welcome from "../components/Welcome";
 import PopularMeditation from "../components/PopularMeditation";
 import DailyMeditation from "../components/DailyMeditation";
-import DailyQuote from "../components/DailyQuote";
+import { useTheme } from "../context/ThemeProvider";
 
 const Home = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -20,9 +20,19 @@ const Home = () => {
     console.log("user", user);
     setUserDetails(user);
   };
+  const { theme, toggleTheme } = useTheme();
+  console.log("theme", theme);
+
+  const isDarkMode = theme === "dark";
   return (
     <>
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: isDarkMode
+            ? COLORS.darkBackground
+            : COLORS.lightWhite,
+        }}>
         <ScreenHeaderBtn />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View
@@ -33,10 +43,10 @@ const Home = () => {
             testID="screensDisplay">
             <Welcome
               userDetails={userDetails ? JSON.parse(userDetails) : null}
+              isDarkMode={isDarkMode}
             />
-            <DailyQuote/>
-            <PopularMeditation />
-            <DailyMeditation />
+            <PopularMeditation isDarkMode={isDarkMode} />
+            <DailyMeditation isDarkMode={isDarkMode} />
           </View>
         </ScrollView>
       </SafeAreaView>

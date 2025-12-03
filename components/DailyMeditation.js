@@ -11,7 +11,17 @@ import {
 import { COLORS, FONT, SIZES, SHADOWS } from "../constants/theme";
 import useFetch from "../hook/useFetch";
 
-const DailyMeditation = ({ meditations }) => {
+const getThemeStyles = (isDark) => ({
+  headerTitle:{
+    color: isDark ? COLORS.darkText : COLORS.lightText,
+  },
+  cardContainer: {
+    backgroundColor: isDark ? COLORS.lightWhite : COLORS.darkText,
+  },
+});
+
+const DailyMeditation = ({ meditations, isDarkMode }) => {
+  const themeStyles = getThemeStyles(isDarkMode);
   const router = useRouter();
 
   const { isLoading, error, bestMeditations } = useFetch("search", {
@@ -28,10 +38,12 @@ const DailyMeditation = ({ meditations }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Daily Meditation</Text>
+        <Text style={[styles.headerTitle, themeStyles.headerTitle]}>
+          Daily Meditation
+        </Text>
       </View>
 
-      <View style={styles.cardsContainer}>
+      <View style={[styles.cardsContainer, themeStyles.cardsContainer]}>
         {isLoading ? (
           <ActivityIndicator size="large" color={COLORS.primary} />
         ) : error ? (
@@ -40,9 +52,8 @@ const DailyMeditation = ({ meditations }) => {
           data?.map((meditation) => (
             <TouchableOpacity
               key={`meditation-${meditation.id}`}
-              style={styles.cardContainer}
-              onPress={() => handleNavigate(meditation.id)}
-            >
+              style={[styles.cardContainer, themeStyles.cardContainer]}
+              onPress={() => handleNavigate(meditation.id)}>
               <View style={styles.logoContainer}>
                 <Image
                   source={{ uri: meditation.image }}
@@ -55,9 +66,7 @@ const DailyMeditation = ({ meditations }) => {
                 <Text style={styles.meditationName} numberOfLines={1}>
                   {meditation.title}
                 </Text>
-                <Text style={styles.meditationDetail}>
-                  {meditation.target}
-                </Text>
+                <Text style={styles.meditationDetail}>{meditation.target}</Text>
                 <Text style={styles.meditationDetail}>
                   {meditation.duration}
                 </Text>
@@ -86,7 +95,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: SIZES.large,
     fontFamily: FONT.medium,
-    color: COLORS.primary,
   },
   cardsContainer: {
     marginTop: SIZES.medium,
@@ -97,7 +105,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: SIZES.medium,
     borderRadius: SIZES.small,
-    backgroundColor: "#FFF",
     ...SHADOWS.medium,
     shadowColor: COLORS.white,
   },
